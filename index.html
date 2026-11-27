@@ -1,0 +1,435 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>3 Big Bears Metrics</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout concept: one long report. Headline RTP and its split first, then where wins land, then the reel sets,
+   features and strips. Cool slate neutrals; each RTP source keeps the same colour everywhere it appears. */
+:root {
+  --bg: #EDF1F4; --surface: #FFFFFF; --ink: #11202B; --muted: #566774; --line: #D2DBE2; --line-soft: #E5EBF0;
+  --chip: #E2E9EF; --heat: #2F5D8A;
+  --c1: #2F5D8A; --c2: #B87A0B; --c3: #17837D; --c4: #7A4A9E;
+  --good: #1B7F4B; --good-bg: #DDF2E6; --bad: #B3261E; --bad-bg: #FBE2E0;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B131A; --surface: #121D26; --ink: #E7EEF3; --muted: #92A3AF; --line: #263541; --line-soft: #1B2833;
+    --chip: #1D2B37; --heat: #6FA3D8;
+    --c1: #6FA3D8; --c2: #E8B547; --c3: #4FC3BB; --c4: #B58FD8;
+    --good: #5FD398; --good-bg: #153326; --bad: #FF8F86; --bad-bg: #3A1816;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B131A; --surface: #121D26; --ink: #E7EEF3; --muted: #92A3AF; --line: #263541; --line-soft: #1B2833;
+  --chip: #1D2B37; --heat: #6FA3D8;
+  --c1: #6FA3D8; --c2: #E8B547; --c3: #4FC3BB; --c4: #B58FD8;
+  --good: #5FD398; --good-bg: #153326; --bad: #FF8F86; --bad-bg: #3A1816;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 var(--font-body);
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(28px, 5vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+h3 { font-size: 15px; font-weight: 600; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); font-weight: 600; }
+
+/* header */
+.head { display: grid; gap: 14px; }
+.head-top { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: flex-end; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--chip); border-radius: 999px; padding: 4px 12px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font: 600 13px var(--font-body);
+  color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px;
+}
+.btn:hover { border-color: var(--muted); }
+.btn:focus-within, .seg button:focus-visible { outline: 2px solid var(--c1); outline-offset: 2px; }
+#msg { min-height: 1.2em; font-size: 13px; color: var(--bad); }
+
+/* panel */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+.section { display: grid; gap: 16px; }
+.section > p { max-width: 68ch; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 32px; align-items: center; }
+.big { font-family: var(--font-display); font-weight: 700; font-size: clamp(54px, 11vw, 92px); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.big small { font-size: 0.4em; letter-spacing: 0; margin-left: 4px; color: var(--muted); font-weight: 600; }
+.pill { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 12px; font-weight: 600; }
+.pill.good { background: var(--good-bg); color: var(--good); }
+.pill.bad { background: var(--bad-bg); color: var(--bad); }
+.stack { display: flex; height: 30px; border-radius: 6px; overflow: hidden; gap: 2px; background: var(--line-soft); }
+.stack span { display: block; height: 100%; min-width: 2px; }
+.legend { display: grid; gap: 0; margin-top: 14px; }
+.legend .row { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto auto; gap: 10px; align-items: baseline; padding: 8px 0; border-top: 1px solid var(--line-soft); }
+.legend .row:first-child { border-top: 0; }
+.sw { width: 12px; height: 12px; border-radius: 3px; align-self: center; }
+.legend .v { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; min-width: 68px; }
+.legend .s { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; min-width: 52px; font-size: 13px; }
+.legend .total { font-weight: 700; }
+
+/* stat strip */
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); border-top: 1px solid var(--line); }
+.strip > div { padding: 16px 16px 4px 0; display: grid; gap: 2px; align-content: start; }
+.strip .v { font-family: var(--font-display); font-weight: 600; font-size: 26px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.strip .l { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.strip .s { font-size: 13px; color: var(--muted); }
+
+/* bar rows (distribution, giants, balls) */
+.bars { display: grid; gap: 6px; }
+.brow { display: grid; grid-template-columns: 104px minmax(0, 1fr) 82px 118px; gap: 12px; align-items: center; font-size: 14px; }
+.brow.three { grid-template-columns: 92px minmax(0, 1fr) 72px; }
+.brow .lab { font-weight: 500; }
+.brow .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.brow .cnt { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+.track { position: relative; height: 18px; border-radius: 3px;
+  background-image: linear-gradient(to right, var(--line-soft) 1px, transparent 1px); background-size: calc(100% / 7) 100%; }
+.fill { position: absolute; left: 0; top: 3px; bottom: 3px; border-radius: 2px; background: var(--c1); min-width: 2px; }
+.track.plain { background-image: none; background: var(--line-soft); }
+.axis { position: relative; height: 16px; margin-left: 116px; margin-right: 224px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.axis span { position: absolute; transform: translateX(-50%); top: 0; white-space: nowrap; }
+.axis span:first-child { transform: none; }
+.axis span:last-child { transform: translateX(-100%); }
+
+/* tables */
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; text-align: right; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; padding-left: 0; }
+tr:last-child td { border-bottom: 0; }
+td.name { font-weight: 600; }
+td .role { display: block; font-weight: 400; color: var(--muted); font-size: 12px; margin-top: 1px; }
+
+/* two-column blocks */
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.cols > * { min-width: 0; }
+.kv { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; margin: 0; }
+.kv dt, .kv dd { margin: 0; padding: 9px 0; border-bottom: 1px solid var(--line-soft); }
+.kv dt { color: var(--muted); }
+.kv dd { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.kv dt:last-of-type, .kv dd:last-of-type { border-bottom: 0; }
+.split { display: flex; height: 14px; border-radius: 4px; overflow: hidden; gap: 2px; margin: 6px 0 10px; }
+
+/* strips */
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 600 13px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.heat td, .heat th { text-align: center; padding: 8px 6px; }
+.heat th:first-child, .heat td:first-child { text-align: left; padding-left: 0; }
+.heat td.c { background: color-mix(in srgb, var(--heat) calc(var(--p) * 1%), transparent); border-radius: 3px; }
+.heat td.z { color: var(--muted); }
+.heat td.giant { text-align: center; color: var(--muted); font-style: italic; }
+
+#strips h3 { margin-top: 14px; font-size: 13px; }
+#strips h3:first-child { margin-top: 0; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; line-height: 1.8; word-spacing: 0.35em; margin: 4px 0 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) {
+  .hero, .cols { grid-template-columns: minmax(0, 1fr); }
+  .panel { padding: 18px; }
+  .brow { grid-template-columns: 84px minmax(0, 1fr) 64px; gap: 8px; }
+  .brow .cnt { display: none; }
+  .axis { margin-left: 92px; margin-right: 72px; }
+  .axis span:nth-child(even) { display: none; }
+  .brow.three { grid-template-columns: 76px minmax(0, 1fr) 60px; }
+}
+@media (prefers-reduced-motion: no-preference) { .fill, .stack span { transition: width 0.4s ease; } }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <div class="head-top">
+      <div style="display:grid;gap:6px">
+        <span class="eyebrow">Maths report</span>
+        <h1>3 Big Bears</h1>
+      </div>
+      <label class="btn"><input type="file" id="file" accept=".json,application/json" hidden> Load another run</label>
+    </div>
+    <div class="chips" id="meta"></div>
+    <p class="muted" style="max-width:72ch;display:none">Reel strips, set weights, ball values and the respin chance are placeholders tuned to land near 96%. Reload this page with a new <code>metrics.json</code> after any change to the simulator.</p>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </header>
+
+  <section class="panel">
+    <div class="hero">
+      <div style="display:grid;gap:12px">
+        <span class="eyebrow">Return to player</span>
+        <div class="big" id="rtp"></div>
+        <p class="muted" id="rtp-sub"></p>
+        <div id="rules"></div>
+      </div>
+      <div>
+        <h3>Where the RTP comes from</h3>
+        <div class="stack" id="stack" style="margin-top:12px"></div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+    <div class="strip" id="strip" style="margin-top:24px"></div>
+  </section>
+
+  <section class="section">
+    <h2>Where the wins land</h2>
+    <p class="muted">Share of paid rounds by total win, from the base spin and anything it triggers. The 5000x row is the max-win cap.</p>
+    <div class="panel">
+      <div class="bars" id="dist"></div>
+      <div class="axis" id="axis"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Reel sets</h2>
+    <p class="muted">Each spin picks one set by weight. Sets that cannot trigger a feature have none of its symbols, or too few of them, so the trigger is impossible.</p>
+    <div class="panel scroll"><table id="bg-table"></table></div>
+    <div class="panel scroll"><table id="fg-table"></table></div>
+  </section>
+
+  <section class="section">
+    <h2>Free Spins</h2>
+    <div class="cols">
+      <div class="panel">
+        <h3>Average feature win</h3>
+        <div class="num" style="font-family:var(--font-display);font-weight:700;font-size:40px;margin-top:6px" id="fs-avg"></div>
+        <div class="split" id="fs-split"></div>
+        <dl class="kv" id="fs-kv"></dl>
+      </div>
+      <div class="panel">
+        <h3>Centre 3×3 block, by spin</h3>
+        <p class="muted" style="margin:4px 0 14px">Reels 2 to 4 always show one symbol on all nine cells. A ball block starts the Money Ball Bonus.</p>
+        <div class="bars" id="giant"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Money Ball Bonus</h2>
+    <div class="cols">
+      <div class="panel">
+        <dl class="kv" id="mb-kv"></dl>
+      </div>
+      <div class="panel">
+        <h3>Balls on the grid when the bonus starts</h3>
+        <p class="muted" style="margin:4px 0 14px">Share of bonuses. Six or more balls trigger it.</p>
+        <div class="bars" id="start"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Ball values</h3>
+      <p class="muted" style="margin:4px 0 14px">Each ball that lands is drawn from this table. GRAND (5000x) is paid only when the grid fills.</p>
+      <div class="bars" id="awards"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Reel strip composition</h2>
+    <p class="muted">Symbols per strip, with the same ids the Java code uses: Scatter 1, Money 2, Wild 3, H1 4, H2 5, H3 6, L1 7 to L5 11. Each spin reads three rows from a random stop on each strip. The full strips are listed under the table.</p>
+    <div class="seg" id="seg"></div>
+    <div class="panel scroll"><table class="heat" id="heat"></table></div>
+    <div class="panel" id="strips"></div>
+  </section>
+
+  <section class="section">
+    <h2>Paytable</h2>
+    <p class="muted" id="pt-note"></p>
+    <div class="panel scroll"><table id="pt"></table></div>
+  </section>
+
+</div>
+
+<script id="data" type="application/json">{
+"meta":{"game":"3 Big Bears","rounds":200000000,"seed":12345,"threads":2,"seconds":46.159912,"violations":0},
+"summary":{"rtpPct":95.756686,"ciPct":0.148942,"stdDev":10.746720,"hitFreqPct":29.262548,"baseHitFreqPct":28.451794,"maxWin":5000.000000,"capHits":44,"maxWinOneIn":4545454.545455},
+"rtpParts":{"baseLines":34.051294,"mbbBase":12.781729,"fsLines":42.602219,"fsMbb":6.324678},
+"bgSets":[{"name":"BG1 Normal","weight":857.000000,"selectedPct":85.694686,"lineRtpPct":30.088829,"fsTriggers":0,"mbbTriggers":0,"featureRtpPct":0.000000,"spins":171389371,"canFs":false,"canMbb":false,"worstScatter":0,"worstBalls":5,"counts":[[0,2,1,8,9,10,9,9,9,9,8],[0,2,3,8,9,10,9,9,9,8,8],[0,2,3,8,9,10,9,9,9,8,8],[0,2,3,8,9,10,9,9,9,8,8],[0,2,1,8,9,10,9,9,9,9,8]],"strips":[[9,4,2,7,7,7,10,8,8,10,7,5,10,11,9,7,10,7,4,8,9,4,9,6,10,8,11,7,11,4,4,8,9,3,4,11,4,11,6,6,7,10,6,9,6,8,6,11,5,5,5,10,9,6,11,6,5,8,8,4,5,7,9,5,5,5,11,10,8,9,6,2,10,6],[7,5,3,10,6,6,8,10,7,9,4,9,4,9,8,7,5,10,9,10,6,5,4,11,3,7,4,8,8,9,9,8,8,5,2,9,6,11,4,8,6,7,3,10,5,11,6,8,5,6,7,10,6,7,9,10,4,5,5,5,4,11,6,11,11,8,7,7,11,4,10,9,11,6,2],[4,9,9,11,5,4,11,10,7,11,6,8,5,7,6,10,9,6,8,5,9,6,4,2,4,4,10,11,11,7,8,6,9,7,10,5,6,3,10,5,4,7,8,6,8,7,5,11,7,2,11,10,7,8,8,5,8,4,9,11,5,7,5,10,9,3,4,10,8,9,6,3,6,9,6],[9,10,11,9,4,11,4,7,6,8,10,4,6,6,10,7,6,4,8,10,3,11,6,9,2,9,6,7,6,10,7,10,11,7,7,5,5,6,4,11,8,8,8,2,9,11,3,11,9,6,9,5,6,7,8,5,8,4,5,4,4,9,8,7,5,5,11,3,8,10,9,5,5,7,10],[7,4,9,11,5,6,10,11,10,10,11,11,5,8,7,9,7,10,9,6,5,4,10,7,7,9,8,10,7,11,6,9,10,10,9,4,8,8,5,9,5,7,7,3,11,6,6,8,5,8,6,2,11,8,5,4,10,6,11,9,8,4,4,6,5,6,2,5,4,8,9,7,6,4]]},{"name":"BG2 FreeSpins set","weight":71.000000,"selectedPct":7.102815,"lineRtpPct":1.963851,"fsTriggers":1295237,"mbbTriggers":0,"featureRtpPct":48.926897,"spins":14205631,"canFs":true,"canMbb":false,"worstScatter":3,"worstBalls":5,"counts":[[0,2,1,8,9,10,9,9,9,9,8],[12,2,3,8,9,10,8,7,7,7,7],[12,2,3,8,9,10,8,7,7,7,7],[12,2,3,8,9,10,8,7,7,7,7],[0,2,1,8,9,10,9,9,9,9,8]],"strips":[[8,4,8,9,6,10,4,10,11,3,9,4,10,5,11,5,6,4,5,9,11,2,7,10,8,9,6,8,7,5,11,10,7,9,7,7,10,9,10,4,9,11,4,5,7,6,10,5,9,5,8,7,7,9,6,11,7,10,5,6,6,11,4,6,6,2,6,8,8,11,8,4,5,8],[4,3,8,6,6,6,9,4,7,5,5,10,11,1,5,9,6,3,6,8,11,7,10,4,1,11,10,1,6,9,4,5,2,1,8,11,7,5,9,7,5,10,1,9,11,11,7,1,8,9,4,5,1,4,2,1,5,8,7,7,1,6,4,8,4,5,3,6,6,7,10,1,10,11,1,9,8,10,1,6],[2,10,5,11,2,6,10,4,11,7,6,6,1,9,6,1,8,6,10,8,1,7,7,1,7,5,4,1,4,7,9,1,5,10,5,7,10,9,9,7,3,10,6,1,6,6,4,9,7,6,6,10,11,1,11,5,8,4,1,8,8,11,11,1,3,4,8,5,11,9,1,5,4,3,5,4,5,9,8,1],[1,4,8,4,6,4,1,8,9,1,5,7,9,9,8,10,3,1,4,5,7,5,3,10,1,11,6,7,1,5,11,5,8,2,11,3,1,11,10,6,7,8,2,6,9,8,10,6,9,6,7,9,10,11,5,1,6,8,11,9,1,4,10,4,7,1,5,6,4,7,4,6,1,6,7,11,5,1,5,10],[7,9,5,10,4,3,6,8,6,8,8,10,10,4,11,11,7,9,6,5,5,4,9,4,10,9,7,8,8,6,4,10,9,6,11,5,10,6,9,11,5,11,8,6,4,8,5,10,4,6,7,2,9,6,11,8,9,7,6,7,7,5,9,5,8,11,11,2,5,4,10,10,7,7]]},{"name":"BG3 MoneyBall set","weight":72.000000,"selectedPct":7.202499,"lineRtpPct":1.998614,"fsTriggers":0,"mbbTriggers":553500,"featureRtpPct":12.781729,"spins":14404998,"canFs":false,"canMbb":true,"worstScatter":0,"worstBalls":12,"counts":[[0,14,1,8,9,10,7,7,7,7,6],[0,14,3,8,9,10,7,6,6,6,6],[0,14,3,8,9,10,7,6,6,6,6],[0,14,3,8,9,10,7,6,6,6,6],[0,14,1,8,9,10,7,7,7,7,6]],"strips":[[4,6,9,10,5,4,2,8,9,6,5,6,8,8,4,11,11,6,6,10,6,11,11,9,9,4,2,9,4,11,2,2,2,8,2,5,2,7,9,5,5,5,10,7,2,6,4,7,2,6,6,6,2,9,10,8,7,11,7,4,2,7,2,5,5,4,8,2,10,5,2,8,3,10,7,10],[3,2,9,9,4,4,11,11,5,5,5,4,2,7,5,9,4,8,6,2,5,8,8,10,7,2,11,4,6,5,2,11,8,5,2,2,8,6,4,7,2,4,2,7,8,5,10,9,6,4,7,6,10,10,2,10,5,3,6,9,2,11,6,3,6,7,2,2,6,11,10,6,2,9,7],[10,11,10,3,4,11,9,7,10,4,5,9,8,6,6,4,2,6,8,6,6,5,8,7,5,2,5,11,2,8,7,2,2,5,9,4,4,11,6,11,9,4,4,2,6,8,6,2,7,2,10,5,9,9,2,2,5,5,6,5,2,7,2,7,10,4,3,2,7,10,6,11,3,8,2],[4,4,2,10,5,11,10,6,2,8,2,7,11,9,2,2,9,5,9,4,11,4,10,2,5,6,3,10,7,4,2,10,4,8,11,8,6,9,5,11,3,9,6,2,5,8,5,6,7,2,10,3,6,7,5,6,6,7,2,6,7,6,2,5,8,5,2,11,7,9,2,2,4,8,4],[2,10,2,2,3,5,4,11,2,6,6,9,9,10,6,5,6,4,9,5,4,4,7,4,5,5,8,10,7,6,8,6,5,2,11,11,10,8,2,9,8,2,5,11,8,7,2,11,6,2,7,10,8,4,6,7,10,11,4,10,2,9,6,9,5,8,2,2,2,6,4,7,9,5,2,7]]}],
+"fgSets":[{"name":"FG1 Normal (H centre)","weight":975.000000,"selectedPct":97.500496,"spins":7577175,"lineWinPerSpin":11.244882,"mbbTriggers":0,"mbbWinPerTrigger":0.000000,"canMbb":false,"worstBalls":2,"middle":[4,4,4,4,4,5,5,5,6,6],"counts":[[0,2,0,10,9,8,6,6,6,6,6],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,2,1,10,9,8,6,6,6,6,5]],"strips":[[6,5,11,4,8,11,5,9,9,7,9,6,6,9,8,4,11,8,7,6,4,5,6,6,7,6,4,5,4,7,4,5,5,7,5,10,4,8,4,10,11,4,7,11,10,10,9,9,2,8,10,6,11,8,4,10,5,5,2],[],[],[],[4,10,9,5,10,5,2,11,6,11,11,4,5,9,4,6,4,6,9,9,5,7,6,4,5,5,7,5,6,9,10,4,7,8,8,6,3,7,4,8,7,8,6,5,5,11,7,4,2,4,9,10,4,6,10,8,8,10,11]]},{"name":"FG2 Money (ball centre)","weight":25.000000,"selectedPct":2.499504,"spins":194247,"lineWinPerSpin":0.000000,"mbbTriggers":194247,"mbbWinPerTrigger":65.119953,"canMbb":true,"worstBalls":11,"middle":[2],"counts":[[0,4,0,10,9,8,6,6,6,6,6],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0],[0,4,1,10,9,8,6,6,6,6,5]],"strips":[[2,10,11,11,4,9,9,10,7,5,7,6,11,4,4,4,7,8,10,5,5,5,2,8,7,9,5,4,6,2,10,8,4,11,10,6,9,11,4,7,6,4,4,9,7,6,6,8,8,10,4,9,6,8,2,11,6,5,5,5,5],[],[],[],[5,6,2,11,7,7,9,11,4,10,7,10,5,4,10,5,9,8,3,6,4,9,5,9,8,5,2,6,7,6,5,4,4,11,6,4,5,4,2,8,4,8,8,11,10,7,7,8,11,6,2,4,10,5,6,9,4,6,5,9,10]]}],
+"freeSpins":{"triggers":1295237,"oneIn":154.411895,"spinsPerFeature":6,"avgWin":75.548949,"avgLines":65.782894,"avgMbb":9.766055,"giant":{"H1":3787580,"H2":2271302,"H3":1518293,"Money":194247}},
+"moneyBall":{"triggers":747747,"oneIn":267.470147,"fromFs":194247,"avgBalls":7.856442,"avgRespins":4.303065,"fullGrid":44,"fullGridFs":37,"grandRtpPct":0.110000,"cellProb":0.024000,"startRespins":3,"startBalls":[0,0,0,0,0,0,416915,110403,22465,128633,61907,7421,3,0,0,0],"awards":[{"name":"0.5x","value":0.500000,"weight":3000.000000,"count":1733838},{"name":"1x","value":1.000000,"weight":3000.000000,"count":1732274},{"name":"2x","value":2.000000,"weight":1800.000000,"count":1041923},{"name":"3x","value":3.000000,"weight":1000.000000,"count":577398},{"name":"5x","value":5.000000,"weight":600.000000,"count":346885},{"name":"10x","value":10.000000,"weight":300.000000,"count":173654},{"name":"25x","value":25.000000,"weight":150.000000,"count":86963},{"name":"50x","value":50.000000,"weight":60.000000,"count":34426},{"name":"100x","value":100.000000,"weight":25.000000,"count":14414},{"name":"MINI","value":20.000000,"weight":120.000000,"count":68957},{"name":"MINOR","value":50.000000,"weight":40.000000,"count":23464},{"name":"MAJOR","value":500.000000,"weight":70.000000,"count":40435}]},
+"distribution":[{"name":"0x","count":141474905,"pct":70.737453},{"name":"0-1x","count":34006181,"pct":17.003091},{"name":"1-2x","count":13068808,"pct":6.534404},{"name":"2-5x","count":8146565,"pct":4.073283},{"name":"5-10x","count":1272279,"pct":0.636140},{"name":"10-20x","count":635039,"pct":0.317520},{"name":"20-50x","count":516869,"pct":0.258435},{"name":"50-100x","count":527336,"pct":0.263668},{"name":"100-500x","count":312590,"pct":0.156295},{"name":"500-1000x","count":38348,"pct":0.019174},{"name":"1000-5000x","count":1036,"pct":0.000518},{"name":"5000x (max)","count":44,"pct":0.000022}],
+"config":{"symbols":["Scatter","Money","Wild","H1","H2","H3","L1","L2","L3","L4","L5"],"symbolIds":[1,2,3,4,5,6,7,8,9,10,11],"paylines":20,"maxWin":5000.000000,"grand":5000.000000,"paytable":[{"symbol":"H1","id":4,"pays":[1.000000,3.000000,10.000000]},{"symbol":"H2","id":5,"pays":[0.800000,2.000000,8.000000]},{"symbol":"H3","id":6,"pays":[0.600000,1.500000,6.000000]},{"symbol":"L1","id":7,"pays":[0.400000,1.000000,3.000000]},{"symbol":"L2","id":8,"pays":[0.300000,0.800000,2.500000]},{"symbol":"L3","id":9,"pays":[0.300000,0.700000,2.000000]},{"symbol":"L4","id":10,"pays":[0.200000,0.600000,1.500000]},{"symbol":"L5","id":11,"pays":[0.200000,0.500000,1.200000]}]}
+}</script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+  var fmt = function (v, d) { d = d == null ? 0 : d; return Number(v).toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+  var oneIn = function (v) { return v > 0 ? '1 in ' + fmt(v, v < 10 ? 2 : v < 100 ? 1 : 0) : 'none'; };
+  var COLORS = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)'];
+  var D = null, setIdx = 0;
+
+  function render(d) {
+    D = d;
+    var s = d.summary, m = d.meta;
+    $('meta').innerHTML = [
+      fmt(m.rounds) + ' rounds', 'seed ' + m.seed, m.threads + ' threads', fmt(m.seconds, 1) + ' s run time',
+      d.config.paylines + ' paylines', 'max win ' + fmt(d.config.maxWin) + 'x'
+    ].map(function (t) { return '<span class="chip">' + esc(t) + '</span>'; }).join('');
+
+    $('rtp').innerHTML = fmt(s.rtpPct, 2) + '<small>%</small>';
+    $('rtp-sub').textContent = '± ' + fmt(s.ciPct, 2) + ' points at 95% confidence, over ' + fmt(m.rounds) + ' rounds.';
+    $('rules').innerHTML = m.violations === 0
+      ? '<span class="pill good">Reel-set rules held: 0 violations</span>'
+      : '<span class="pill bad">' + fmt(m.violations) + ' reel-set rule violations</span>';
+
+    // RTP composition
+    var p = d.rtpParts;
+    var parts = [['Base game lines', p.baseLines], ['Money Ball, base game', p.mbbBase], ['Free Spins lines', p.fsLines], ['Money Ball, in Free Spins', p.fsMbb]];
+    var sum = parts.reduce(function (a, x) { return a + x[1]; }, 0);
+    $('stack').innerHTML = parts.map(function (x, i) { return '<span style="width:' + (x[1] / sum * 100) + '%;background:' + COLORS[i] + '" title="' + esc(x[0]) + '"></span>'; }).join('');
+    var rows = parts.map(function (x, i) {
+      return '<div class="row"><span class="sw" style="background:' + COLORS[i] + '"></span><span>' + esc(x[0]) + '</span><span class="v">' + fmt(x[1], 2) + '%</span><span class="s">' + fmt(x[1] / s.rtpPct * 100, 0) + '%</span></div>';
+    });
+    var trim = s.rtpPct - sum;
+    if (Math.abs(trim) >= 0.005) rows.push('<div class="row"><span class="sw" style="background:var(--line)"></span><span>Max-win cap trimming</span><span class="v">' + (trim < 0 ? '−' : '+') + fmt(Math.abs(trim), 2) + '%</span><span class="s"></span></div>');
+    rows.push('<div class="row total"><span></span><span>Total RTP</span><span class="v">' + fmt(s.rtpPct, 2) + '%</span><span class="s"></span></div>');
+    $('legend').innerHTML = rows.join('');
+
+    // stat strip
+    var fs = d.freeSpins, mb = d.moneyBall;
+    var stats = [
+      ['Hit frequency', fmt(s.hitFreqPct, 1) + '%', oneIn(100 / s.hitFreqPct) + ' rounds pay'],
+      ['Std deviation', fmt(s.stdDev, 2), 'x bet per round'],
+      ['Max win', fmt(d.config.maxWin) + 'x', s.capHits ? oneIn(s.maxWinOneIn) + ' rounds (' + fmt(s.capHits) + ' hits)' : 'not reached in this run'],
+      ['Free Spins', oneIn(fs.oneIn), 'avg win ' + fmt(fs.avgWin, 1) + 'x'],
+      ['Money Ball', oneIn(mb.oneIn), fmt(mb.triggers ? mb.fromFs / mb.triggers * 100 : 0, 0) + '% start in Free Spins']
+    ];
+    $('strip').innerHTML = stats.map(function (x) { return '<div><span class="l">' + esc(x[0]) + '</span><span class="v">' + esc(x[1]) + '</span><span class="s">' + esc(x[2]) + '</span></div>'; }).join('');
+
+    // distribution, log scale 0.0001% .. 100%
+    var LO = -5, HI = 2;
+    $('dist').innerHTML = d.distribution.map(function (b) {
+      var w = b.pct > 0 ? Math.max(0, (Math.log10(b.pct) - LO) / (HI - LO) * 100) : 0;
+      return '<div class="brow"><span class="lab">' + esc(b.name) + '</span><div class="track"><div class="fill" style="width:' + w + '%"></div></div><span class="val">' + (b.pct >= 0.01 ? fmt(b.pct, 2) : b.pct >= 0.0001 ? fmt(b.pct, 4) : b.pct > 0 ? fmt(b.pct, 6) : '0') + '%</span><span class="cnt">' + fmt(b.count) + '</span></div>';
+    }).join('');
+    var ticks = ['0.00001%', '0.0001%', '0.001%', '0.01%', '0.1%', '1%', '10%', '100%'];
+    $('axis').innerHTML = ticks.map(function (t, i) { return '<span style="left:' + (i / 7 * 100) + '%">' + t + '</span>'; }).join('');
+
+    // reel set tables
+    var role = function (x, isFg) {
+      if (isFg) return x.canMbb ? 'Giant ball block, Money Ball always starts' : 'Giant H1/H2/H3, Money Ball impossible';
+      if (x.canFs) return 'Can trigger Free Spins, not Money Ball';
+      if (x.canMbb) return 'Can trigger Money Ball, not Free Spins';
+      return 'Line wins only';
+    };
+    $('bg-table').innerHTML = '<thead><tr><th>Base game set</th><th>Weight</th><th>Selected</th><th>Line RTP</th><th>Feature RTP</th><th>Triggers</th><th>Trigger rate in set</th></tr></thead><tbody>' +
+      d.bgSets.map(function (x) {
+        var trig = x.fsTriggers || x.mbbTriggers, kind = x.fsTriggers ? 'Free Spins' : x.mbbTriggers ? 'Money Ball' : '';
+        return '<tr><td class="name">' + esc(x.name) + '<span class="role">' + esc(role(x, false)) + '</span></td><td>' + fmt(x.weight) + '</td><td>' + fmt(x.selectedPct, 2) + '%</td><td>' + fmt(x.lineRtpPct, 2) + '%</td><td>' + fmt(x.featureRtpPct, 2) + '%</td><td>' + (trig ? fmt(trig) + ' ' + kind : '–') + '</td><td>' + (trig ? oneIn(x.spins / trig) : '–') + '</td></tr>';
+      }).join('') + '</tbody>';
+    $('fg-table').innerHTML = '<thead><tr><th>Free Spins set</th><th>Weight</th><th>Selected</th><th>Line win per spin</th><th>Money Ball starts</th><th>Win per Money Ball</th></tr></thead><tbody>' +
+      d.fgSets.map(function (x) {
+        return '<tr><td class="name">' + esc(x.name) + '<span class="role">' + esc(role(x, true)) + '</span></td><td>' + fmt(x.weight) + '</td><td>' + fmt(x.selectedPct, 2) + '%</td><td>' + fmt(x.lineWinPerSpin, 2) + 'x</td><td>' + (x.mbbTriggers ? fmt(x.mbbTriggers) : '–') + '</td><td>' + (x.mbbTriggers ? fmt(x.mbbWinPerTrigger, 1) + 'x' : '–') + '</td></tr>';
+      }).join('') + '</tbody>';
+
+    // free spins
+    $('fs-avg').textContent = fmt(fs.avgWin, 1) + 'x';
+    var linesShare = fs.avgWin ? fs.avgLines / fs.avgWin * 100 : 0;
+    $('fs-split').innerHTML = '<span style="width:' + linesShare + '%;background:var(--c3)"></span><span style="width:' + (100 - linesShare) + '%;background:var(--c4)"></span>';
+    $('fs-kv').innerHTML =
+      '<dt><span class="sw" style="display:inline-block;background:var(--c3);margin-right:8px"></span>Line wins</dt><dd>' + fmt(fs.avgLines, 1) + 'x</dd>' +
+      '<dt><span class="sw" style="display:inline-block;background:var(--c4);margin-right:8px"></span>Money Ball inside Free Spins</dt><dd>' + fmt(fs.avgMbb, 1) + 'x</dd>' +
+      '<dt>Spins per feature</dt><dd>' + fs.spinsPerFeature + ' (no retrigger)</dd>' +
+      '<dt>Triggers</dt><dd>' + fmt(fs.triggers) + '</dd>';
+    var g = fs.giant, gTot = (g.H1 || 0) + (g.H2 || 0) + (g.H3 || 0) + (g.Money || 0);
+    var gRows = [['H1', g.H1, 'var(--c1)'], ['H2', g.H2, 'var(--c1)'], ['H3', g.H3, 'var(--c1)'], ['Money Ball', g.Money, 'var(--c4)']];
+    $('giant').innerHTML = gRows.map(function (r) {
+      var pc = gTot ? r[1] / gTot * 100 : 0;
+      return '<div class="brow three"><span class="lab">' + r[0] + '</span><div class="track plain"><div class="fill" style="width:' + pc + '%;background:' + r[2] + '"></div></div><span class="val">' + fmt(pc, 1) + '%</span></div>';
+    }).join('');
+
+    // money ball
+    $('mb-kv').innerHTML =
+      '<dt>Triggers</dt><dd>' + fmt(mb.triggers) + ' (' + oneIn(mb.oneIn) + ' rounds)</dd>' +
+      '<dt>Started inside Free Spins</dt><dd>' + fmt(mb.fromFs) + ' (' + fmt(mb.triggers ? mb.fromFs / mb.triggers * 100 : 0, 0) + '%)</dd>' +
+      '<dt>Balls on the grid at the end</dt><dd>' + fmt(mb.avgBalls, 1) + ' of 15</dd>' +
+      '<dt>Respins played</dt><dd>' + fmt(mb.avgRespins, 1) + ' on average</dd>' +
+      '<dt>Respin chance per empty cell</dt><dd>' + fmt(mb.cellProb * 100, 1) + '%</dd>' +
+      '<dt>Full grid (GRAND ' + fmt(d.config.grand) + 'x)</dt><dd>' + fmt(mb.fullGrid) + ' (' + fmt(mb.triggers ? mb.fullGrid / mb.triggers * 100 : 0, 2) + '% of bonuses)</dd>' +
+      '<dt>Full grids from Free Spins</dt><dd>' + fmt(mb.fullGridFs) + '</dd>' +
+      '<dt>GRAND share of total RTP</dt><dd>' + fmt(mb.grandRtpPct, 2) + '%</dd>';
+    var sb = mb.startBalls, sTot = sb.reduce(function (a, b) { return a + b; }, 0), sRows = '';
+    var sMax = Math.max.apply(null, sb.map(function (c) { return sTot ? c / sTot * 100 : 0; }).concat([0.001]));
+    sb.forEach(function (c, i) {
+      if (!c) return;
+      var pc = c / sTot * 100;
+      sRows += '<div class="brow three"><span class="lab">' + i + ' balls</span><div class="track plain"><div class="fill" style="width:' + (pc / sMax * 100) + '%;background:var(--c2)"></div></div><span class="val">' + fmt(pc, 1) + '%</span></div>';
+    });
+    $('start').innerHTML = sRows;
+    var aTot = mb.awards.reduce(function (a, x) { return a + x.count; }, 0), wTot = mb.awards.reduce(function (a, x) { return a + x.weight; }, 0);
+    var aMax = Math.max.apply(null, mb.awards.map(function (x) { return aTot ? x.count / aTot * 100 : 0; }).concat([0.001]));
+    $('awards').innerHTML = mb.awards.map(function (x) {
+      var pc = aTot ? x.count / aTot * 100 : 0, jack = /^M/.test(x.name) && isNaN(parseFloat(x.name));
+      return '<div class="brow"><span class="lab">' + esc(x.name) + (jack ? ' · ' + fmt(x.value) + 'x' : '') + '</span><div class="track plain"><div class="fill" style="width:' + (pc / aMax * 100) + '%;background:' + (jack ? 'var(--c2)' : 'var(--c1)') + '"></div></div><span class="val">' + fmt(pc, pc < 1 ? 2 : 1) + '%</span><span class="cnt">weight ' + fmt(x.weight / wTot * 100, 2) + '%</span></div>';
+    }).join('');
+
+    // strips
+    var all = d.bgSets.concat(d.fgSets);
+    $('seg').innerHTML = all.map(function (x, i) { return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === setIdx) + '">' + esc(x.name.split(' ')[0]) + '</button>'; }).join('');
+    drawHeat();
+
+    // paytable
+    $('pt-note').textContent = d.config.paylines + ' paylines, left to right. Pays are multiples of the total bet per winning line. Wild pays like H1 when 3 or more start a line, and substitutes for H1 to L5. Each line pays its highest win only.';
+    $('pt').innerHTML = '<thead><tr><th>Symbol</th><th>Id</th><th>3 of a kind</th><th>4 of a kind</th><th>5 of a kind</th></tr></thead><tbody>' +
+      d.config.paytable.map(function (r) { return '<tr><td class="name">' + esc(r.symbol) + '</td><td>' + (r.id != null ? r.id : '') + '</td>' + r.pays.map(function (v) { return '<td>' + fmt(v, 2) + 'x</td>'; }).join('') + '</tr>'; }).join('') +
+      (function () { var h = d.config.paytable.filter(function (r) { return r.symbol === 'H1'; })[0], w = d.config.symbols.indexOf('Wild'); return h && w >= 0 ? '<tr><td class="name">Wild<span class="role">Pays as H1, also substitutes</span></td><td>' + d.config.symbolIds[w] + '</td>' + h.pays.map(function (v) { return '<td>' + fmt(v, 2) + 'x</td>'; }).join('') + '</tr>' : ''; })() + '</tbody>';
+  }
+
+  function drawHeat() {
+    var all = D.bgSets.concat(D.fgSets), x = all[setIdx], syms = D.config.symbols;
+    var max = 1;
+    x.counts.forEach(function (r) { r.forEach(function (c) { if (c > max) max = c; }); });
+    var ids = D.config.symbolIds || [];
+    var head = '<thead><tr><th>' + esc(x.name) + '</th>' + syms.map(function (s, i) { return '<th>' + esc(s) + (ids[i] != null ? '<br><span style="font-weight:400;text-transform:none">id ' + ids[i] + '</span>' : '') + '</th>'; }).join('') + '<th>Length</th></tr></thead>';
+    var body = x.counts.map(function (r, i) {
+      var len = r.reduce(function (a, b) { return a + b; }, 0);
+      if (!len) return '<tr><td class="name">Reel ' + (i + 1) + '</td><td class="giant" colspan="' + (syms.length + 1) + '">Centre block: one symbol on all nine cells</td></tr>';
+      return '<tr><td class="name">Reel ' + (i + 1) + '</td>' + r.map(function (c) { return c ? '<td class="c" style="--p:' + Math.round(c / max * 60) + '">' + c + '</td>' : '<td class="z">·</td>'; }).join('') + '<td>' + len + '</td></tr>';
+    }).join('');
+    $('heat').innerHTML = head + '<tbody>' + body + '</tbody>';
+    var sl = (x.strips || []).map(function (st, i) { return st.length ? '<h3>Reel ' + (i + 1) + ' · ' + st.length + ' stops</h3><p class="mono">' + st.join(' ') + '</p>' : ''; }).join('');
+    if (x.middle) sl += '<h3>Centre block pick · ' + x.middle.length + ' stop' + (x.middle.length > 1 ? 's' : '') + '</h3><p class="mono">' + x.middle.join(' ') + '</p><p class="muted" style="margin-top:6px">One stop is picked and shown on all nine cells of reels 2 to 4.</p>';
+    $('strips').innerHTML = sl;
+  }
+
+  $('seg').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    setIdx = Number(b.getAttribute('data-i'));
+    Array.prototype.forEach.call($('seg').children, function (c, i) { c.setAttribute('aria-pressed', String(i === setIdx)); });
+    drawHeat();
+  });
+
+  function valid(d) {
+    return d && d.meta && d.summary && d.rtpParts && Array.isArray(d.bgSets) && Array.isArray(d.fgSets) &&
+      d.freeSpins && d.moneyBall && Array.isArray(d.distribution) && d.config;
+  }
+  $('file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var d = JSON.parse(r.result);
+        if (!valid(d)) throw new Error('shape');
+        $('msg').textContent = ''; setIdx = 0; render(d);
+      } catch (err) { $('msg').textContent = 'That file is not a metrics.json written by BigBearsSim. Run the simulator with a fourth argument, for example: java BigBearsSim 200000000 2 12345 metrics.json'; }
+    };
+    r.readAsText(f); e.target.value = '';
+  });
+
+  render(JSON.parse($('data').textContent));
+})();
+</script>
+
+</body></html>
